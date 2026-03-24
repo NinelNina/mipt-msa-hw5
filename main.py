@@ -1,34 +1,64 @@
 import requests
 
-def get_text(url):
-    response = requests.get(url)
-    return response.text
 
-def count_word_frequencies(url, word):
-    text = get_text(url)
-    words = text.split()
-    count = 0
-    for w in words:
-        if w == word:
-            count += 1
-    return count
+def batch_generator(file_obj, size):
+    batch = set()
+    for line in file_obj:
+        word = line.strip()
+        if word:
+            batch.add(word)
+        if len(batch) >= size:
+            yield batch
+            batch = set()
+    if batch:
+        yield batch
+
+
+def count_batch_frequencies(words_from_text, words_to_find):
+    frequencies = {word: 0 for word in words_to_find}
+    for word in words_from_text:
+        if word in frequencies:
+            frequencies[word] += 1
+
+    return frequencies
+
+
+def get_text(url):
+    try:
+        response = requests.get(url)
+        return response.text
+    except Exception as e:
+        print(f"Error loading text: {e}")
+        raise
+
 
 def main():
     words_file = "words.txt"
-    url = "https://eng.mipt.ru/why-mipt/"
+    url = "https://eng.mipt.ru/why-mipt/  "
+    batch_size = 100
 
-    words_to_count = []
-    with open(words_file, 'r') as file:
-        for line in file:
-            word = line.strip()
-            if word:
-                words_to_count.append(word)
+    try:
+        text = get_text(url).lower()
+        words_from_text = [word.strip() for word in text.split()]
+        all_frequencies = {}
 
-    frequencies = {}
-    for word in words_to_count:
-        frequencies[word] = count_word_frequencies(url, word)
-    
-    print(frequencies)
+        with open(words_file, 'r', encoding='utf-8') as file:
+            for i, batch in enumerate(batch_generator(file, batch_size), 1):
+                batch_results = count_batch_frequencies(words_from_text, batch)
+                all_frequencies.update(batch_results)
+
+        all_frequencies = dict(sorted(all_frequencies.items(), key=lambda item: item[1], reverse=True))
+        print(all_frequencies)
+
+    except FileNotFoundError:
+        print(f"Error: file '{words_file}' not found.")
+    except PermissionError:
+        print(f"Error: permission for reading '{words_file}' denied.")
+    except UnicodeDecodeError as e:
+        print(f"Error decoding '{words_file}': {e}")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+
 
 if __name__ == "__main__":
     main()

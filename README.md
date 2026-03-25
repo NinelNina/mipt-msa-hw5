@@ -182,7 +182,7 @@ Line #  |  Mem usage  |  Increment | Occurrences |  Line Contents
 ## До оптимизации:
 
 
-Line #    Mem usage    Increment  Occurrences   Line Contents
+Line #  |  Mem usage  |  Increment | Occurrences |  Line Contents
 =============================================================
      6     37.6 MiB     37.6 MiB           1   @profile
      7                                         def get_text(url):
@@ -192,7 +192,7 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
 
 Filename: main_old.py
 
-Line #    Mem usage    Increment  Occurrences   Line Contents
+Line #  |  Mem usage  |  Increment | Occurrences |  Line Contents
 =============================================================
     12     37.6 MiB     37.6 MiB           1   @profile
     13                                         def count_word_frequencies(url, word):
@@ -207,7 +207,7 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
 
 Filename: main_old.py
 
-Line #    Mem usage    Increment  Occurrences   Line Contents
+Line #  |  Mem usage  |  Increment | Occurrences |  Line Contents
 =============================================================
     23     31.3 MiB     31.3 MiB           1   @profile
     24                                         def main():

@@ -34,7 +34,7 @@ def get_text(url):
 
 def main():
     words_file = "words.txt"
-    url = "https://eng.mipt.ru/why-mipt/  "
+    url = "https://eng.mipt.ru/why-mipt/"
     batch_size = 100
 
     try:

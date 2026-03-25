@@ -1,6 +1,9 @@
 import requests
+#from line_profiler import profile
+from memory_profiler import profile
 
 
+@profile
 def batch_generator(file_obj, size):
     batch = set()
     for line in file_obj:
@@ -14,6 +17,7 @@ def batch_generator(file_obj, size):
         yield batch
 
 
+@profile
 def count_batch_frequencies(words_from_text, words_to_find):
     frequencies = {word: 0 for word in words_to_find}
     for word in words_from_text:
@@ -23,6 +27,7 @@ def count_batch_frequencies(words_from_text, words_to_find):
     return frequencies
 
 
+@profile
 def get_text(url):
     try:
         response = requests.get(url)
@@ -32,9 +37,10 @@ def get_text(url):
         raise
 
 
+@profile
 def main():
     words_file = "words.txt"
-    url = "https://eng.mipt.ru/why-mipt/  "
+    url = "https://eng.mipt.ru/why-mipt/"
     batch_size = 100
 
     try:
